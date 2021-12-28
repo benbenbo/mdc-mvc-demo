@@ -1,0 +1,4 @@
+server:
+  servlet:
+    context-path: /mdc-mvc-demo
+  port: 8081
