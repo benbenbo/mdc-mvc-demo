@@ -18,6 +18,6 @@ public class TestController {
 
     @GetMapping(value="/hello")
     public String hello(){
-        return "/hello";
+        return "hello";
     }
 }

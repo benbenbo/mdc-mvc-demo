@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration debug="true" scan="true" scanPeriod="1 seconds">
+    <!-- 用于指定logger上下文名称，默认为default -->
+    <contextName>logback</contextName>
+
+    <!-- 设置变量FILE_PATH，用于指定名为FILE的appender的目的文件存放的目录 -->
+    <property name="FILE_PATH" value="/mnt/logs/"></property>
+
+    <!-- ************************常用的Appender************************************** -->
+    <!--
+        <appender>标签包含2个属性：name、class
+        name属性：指定appender名称;class属性：指定目的地类型 （比如ConsoleAppender、FileAppender等）
+        class属性的值决定了<appender>标签包含的子标签的种类。
+        -->
+    <!-- 该appender的功能是将记录信息以特定格式写到控制台 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!--encoder:将事件转换为字符串
+            默认配置为PatternLayoutEncoder类
+            encoder用于替代Layout，encoder扩展了Layout功能
+            Layout功能：只负责把事件转换为字符串，但是不能指定何时将记录写入到指定目的地
+            encoder功能：即负责把事件转换为字符串，也可以指定何时将记录写入到指定目的地
+         -->
+        <encoder>
+            <!-- 指定输出格式
+                %d{} :表示时间
+                %thread:请求记录所在的线程名
+                %-5level：用5位显示请求级别
+                %logger{36}：输出logger名，{36}表示logger名最大占用的字符位数，{0}表示最简短logger名（不包含包名）。
+             -->
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{0} -%msg%n</pattern>
+        </encoder>
+    </appender>
+    <!--
+    *****************************根据时间滚动 为滚动规则和条件的appender(最常用)***********************
+    -->
+    <!-- 该appender的功能：将记录信息以特定格式写到文件,当文件达到20MB时，创建以时间为特定规则新的 文件，之后的记录会写到新文件，
+    文件个数最多维持10个，文件达到10个 后删除旧的文件-->
+    <appender name="time_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- TimeBasedRollingPolicy实现了RollingPolicy与TriggeringPolicy，
+            因此只需要<rollingPolicy>标签，不需要<TriggeringPolicy>标签
+            <rollingPolicy>标签有两个子标签：<fileNamePattern>、<maxHistory>
+            <fileNamePattern>：用于指定文件名命名规则
+            <maxHistory>：保留文件的个数，超过了就删除创建时间最久的文件
+         -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 文件名 -->
+            <fileNamePattern>${FILE_PATH}/java_log/test%d{yyyy-MM-dd_HH-mm}.log</fileNamePattern>
+            <maxHistory>10</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{0} -%msg%n</pattern>
+        </encoder>
+    </appender>
+
+
+    <!-- level属性：指定根logger的分配级别 -->
+    <root level="info">
+        <!-- ref属性：指定根logger关联的appender -->
+        <appender-ref ref="STDOUT"></appender-ref>
+        <appender-ref ref="time_file"></appender-ref>
+    </root>
+</configuration>
