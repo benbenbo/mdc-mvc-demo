@@ -27,7 +27,7 @@ public class Swagger2Config {
     public ApiInfo apiInfo(){
         //作者信息
         Contact contact = new Contact("郑炳元", "https://juejin.cn/", "1551907870@qq.com");
-        return new ApiInfo("郑炳元的Swagger文档", "mdc实战使用项目", "v1.0", "https://juejin.cn/",
+        return new ApiInfo("mdc-mvc-demo的接口文档", "mdc实战使用项目", "v1.0", "https://juejin.cn/",
                 contact, "Apache 2.0", "http://www.apache.org/licenses/LICENSE-2.0", new ArrayList<VendorExtension>());
     }
 }
