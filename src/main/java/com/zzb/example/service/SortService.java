@@ -37,11 +37,7 @@ public class SortService {
 
     public void testMergeSort() {
         int[] data = getRandomData();
-        long startMill = System.currentTimeMillis();
         mergeSort(data);
-        long endMill = System.currentTimeMillis();
-        long time = endMill - startMill;
-        log.info("归并排序（100000个数）花费时间："+time+"毫秒");
     }
 
     public int[] mergeSort(int[] list){
@@ -80,11 +76,7 @@ public class SortService {
 
     public void testMergeSortWithForkJoin(){
         int[] data = getRandomData();
-        long startMill = System.currentTimeMillis();
         mergeSortWithForkJoin(data);
-        long endMill = System.currentTimeMillis();
-        long time = endMill - startMill;
-        log.info("归并排序ForkJoin（100000个数）花费时间："+time+"毫秒");
     }
 
     public int[] mergeSortWithForkJoin(int[] list){
