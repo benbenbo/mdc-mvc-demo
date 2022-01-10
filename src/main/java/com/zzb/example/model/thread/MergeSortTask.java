@@ -43,8 +43,8 @@ public class MergeSortTask extends RecursiveTask<int[]> {
         int[] listA = Arrays.copyOfRange(dataList, 0, min);
         int[] listB = Arrays.copyOfRange(dataList,min,dataList.length);
         MergeSortTask mergeSortTask = new MergeSortTask(listA);
-        MergeSortTask mergeSortTask1 = new MergeSortTask(listB);
         mergeSortTask.fork();
+        MergeSortTask mergeSortTask1 = new MergeSortTask(listB);
         mergeSortTask1.fork();
         int[] sortListA = mergeSortTask.join();
         int[] sortListB = mergeSortTask1.join();

@@ -91,7 +91,7 @@ public class SortService {
         if(Objects.isNull(list)||list.length==0){
             return list;
         }
-        ForkJoinPool pool = new ForkJoinPool();
+        ForkJoinPool pool = new ForkJoinPool(4);
         ForkJoinTask<int[]> submit = pool.submit(new MergeSortTask(list));
         return submit.join();
     }
