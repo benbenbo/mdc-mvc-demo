@@ -1,10 +1,11 @@
 package com.zzb.example.service;
 
+import com.google.common.collect.Lists;
+import com.zzb.example.model.dto.SaleTypeDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.IntSummaryStatistics;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
@@ -32,10 +33,33 @@ public class LambdaTestService {
         List<Integer> list = Stream.of(1, 2, 3, 4, 5, 6).collect(Collectors.toList());
         Integer i = list.stream().collect(Collectors.collectingAndThen(Collectors.toList(), this::summarize));
         log.info("规约期值：{}", i);
+
+        List<SaleTypeDto> saleTypeDtoList = getSaleTypeDtoList();
+        Map<String, Optional<SaleTypeDto>> collect = saleTypeDtoList.stream().collect(Collectors.groupingBy(o -> o.getYsbProviderId() + "-" + o.getBatchNo(), Collectors.minBy(Comparator.comparing(SaleTypeDto::getId))));
+        for (Map.Entry<String, Optional<SaleTypeDto>> entry : collect.entrySet()) {
+            log.info("子公司-批次：{}的最小id是{}",entry.getKey(),entry.getValue().orElseGet(()->new SaleTypeDto()).getId());
+        }
     }
 
     private Integer summarize(List<Integer> list){
         Integer collect = list.stream().collect(Collectors.summingInt(o -> o));
         return collect;
+    }
+
+    public List<SaleTypeDto> getSaleTypeDtoList(){
+        SaleTypeDto a = new SaleTypeDto(1, 781, "A");
+        SaleTypeDto a2 = new SaleTypeDto(2, 781, "A");
+        SaleTypeDto a3 = new SaleTypeDto(3, 498, "B");
+        SaleTypeDto a4 = new SaleTypeDto(4, 498, "B");
+        SaleTypeDto a5 = new SaleTypeDto(5, 1520, "C");
+        SaleTypeDto a6 = new SaleTypeDto(6, 1520, "C");
+        List<SaleTypeDto> list = Lists.newArrayList();
+        list.add(a);
+        list.add(a2);
+        list.add(a3);
+        list.add(a4);
+        list.add(a5);
+        list.add(a6);
+        return list;
     }
 }
