@@ -35,11 +35,11 @@ public class LambdaTestService {
         log.info("规约期值：{}", i);
 
         List<SaleTypeDto> saleTypeDtoList = getSaleTypeDtoList();
-        Map<String, Optional<SaleTypeDto>> collect = saleTypeDtoList.stream()
-                .collect(Collectors.groupingBy(o -> o.getYsbProviderId() + "-" + o.getBatchNo(),
-                        Collectors.minBy(Comparator.comparing(SaleTypeDto::getId))));
-        for (Map.Entry<String, Optional<SaleTypeDto>> entry : collect.entrySet()) {
-            log.info("子公司-批次：{}的最小id是{}",entry.getKey(),entry.getValue().orElseGet(SaleTypeDto::new).getId());
+        Map<String, Integer> minSaleTypeIdMap = saleTypeDtoList.stream().collect(Collectors.groupingBy(o -> o.getYsbProviderId() + "-" + o.getBatchNo(),
+                Collectors.collectingAndThen(Collectors.minBy(Comparator.comparing(SaleTypeDto::getId)),
+                        o -> o.orElseGet(SaleTypeDto::new).getId())));
+        for (Map.Entry<String, Integer> entry : minSaleTypeIdMap.entrySet()) {
+            log.info("子公司-批次：{}的最小id是{}",entry.getKey(),entry.getValue());
         }
     }
 
