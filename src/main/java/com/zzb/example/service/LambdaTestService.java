@@ -49,12 +49,12 @@ public class LambdaTestService {
     }
 
     public List<SaleTypeDto> getSaleTypeDtoList(){
-        SaleTypeDto a = new SaleTypeDto(1, 781, "A");
-        SaleTypeDto a2 = new SaleTypeDto(2, 781, "A");
-        SaleTypeDto a3 = new SaleTypeDto(3, 498, "B");
-        SaleTypeDto a4 = new SaleTypeDto(4, 498, "B");
-        SaleTypeDto a5 = new SaleTypeDto(5, 1520, "C");
-        SaleTypeDto a6 = new SaleTypeDto(6, 1520, "C");
+        SaleTypeDto a = new SaleTypeDto(1, 781, "A",4);
+        SaleTypeDto a2 = new SaleTypeDto(2, 781, "A",5);
+        SaleTypeDto a3 = new SaleTypeDto(3, 498, "B",3);
+        SaleTypeDto a4 = new SaleTypeDto(4, 498, "B",3);
+        SaleTypeDto a5 = new SaleTypeDto(5, 1520, "C",null);
+        SaleTypeDto a6 = new SaleTypeDto(6, 1520, "C",null);
         List<SaleTypeDto> list = Lists.newArrayList();
         list.add(a);
         list.add(a2);
@@ -63,5 +63,17 @@ public class LambdaTestService {
         list.add(a5);
         list.add(a6);
         return list;
+    }
+
+
+    public void testComparing(){
+        List<SaleTypeDto> saleTypeDtoList = getSaleTypeDtoList();
+        Comparator<SaleTypeDto> saleTypeDtoComparator = Comparator.comparing(SaleTypeDto::getSaleId,Comparator.nullsLast(Integer::compareTo));
+        List<SaleTypeDto> list = saleTypeDtoList.stream()
+                .sorted(saleTypeDtoComparator.thenComparing(Comparator.comparing(SaleTypeDto::getId).reversed()))
+                .collect(Collectors.toList());
+        for (SaleTypeDto saleTypeDto : list) {
+            log.info("对象：{}",saleTypeDto);
+        }
     }
 }

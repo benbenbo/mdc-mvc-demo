@@ -17,4 +17,5 @@ public class SaleTypeDto {
     private Integer id;
     private Integer ysbProviderId;
     private String batchNo;
+    private Integer saleId;
 }

@@ -31,4 +31,11 @@ public class LambdaTestController {
         lambdaTestService.testCollectingAndThen();
         return "1";
     }
+
+    @ApiOperation(value="测试收集器Collectors.comparing方法",notes="\n开发者：郑炳元")
+    @PostMapping(value="/testComparing")
+    public String testComparing(){
+        lambdaTestService.testComparing();
+        return "2";
+    }
 }
